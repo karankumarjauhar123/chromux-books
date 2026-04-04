@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromux Books Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #222240;
+            --bg-input: #16162a;
+            --border: #2a2a45;
+            --border-focus: #6c5ce7;
+            --text-primary: #f0f0f5;
+            --text-secondary: #8888aa;
+            --text-muted: #555577;
+            --accent: #6c5ce7;
+            --accent-hover: #7d6ff0;
+            --accent-glow: rgba(108, 92, 231, 0.25);
+            --success: #2ed573;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --trending: #ff6b81;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === HEADER === */
+        .header {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-badge {
+            font-size: 11px;
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .status-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* === NAV TABS === */
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-tab {
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .nav-tab.active {
+            color: white;
+            background: var(--accent);
+        }
+
+        .nav-tab .tab-icon {
+            margin-right: 6px;
+        }
+
+        /* === MAIN CONTENT === */
+        .main {
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* === CARDS === */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* === BUTTONS === */
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: var(--bg-card-hover);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #000;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: #000;
+        }
+
+        /* === FORM ELEMENTS === */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-select option {
+            background: var(--bg-card);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* === UPLOAD ZONE === */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.drag-over {
+            border-color: var(--accent);
+            background: rgba(108, 92, 231, 0.05);
+        }
+
+        .upload-zone.has-file {
+            border-color: var(--success);
+            border-style: solid;
+        }
+
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .upload-text strong {
+            color: var(--accent);
+        }
+
+        .upload-formats {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+        }
+
+        .file-info-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .file-info-size {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* === SECTION/CATEGORY LIST === */
+        .section-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .section-item:hover {
+            border-color: var(--accent);
+        }
+
+        .section-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .section-title {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .section-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .trending-badge {
+            background: var(--trending);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .type-badge {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        /* === BOOK GRID === */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 14px;
+        }
+
+        @media (max-width: 400px) {
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        .book-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .book-cover {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 10px;
+        }
+
+        .book-title {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* === MODAL === */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* === TOAST === */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            animation: toast-in 0.3s ease;
+            max-width: 350px;
+            box-shadow: var(--shadow);
+        }
+
+        .toast-success {
+            background: var(--success);
+            color: #000;
+        }
+
+        .toast-error {
+            background: var(--danger);
+            color: white;
+        }
+
+        .toast-info {
+            background: var(--accent);
+            color: white;
+        }
+
+        @keyframes toast-in {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* === PROGRESS === */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #a29bfe);
+            border-radius: 2px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        /* === SETUP SCREEN === */
+        .setup-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .setup-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .setup-card h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .setup-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .setup-steps {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .setup-step {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .setup-step-num {
+            background: var(--accent);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* === EMPTY STATE === */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .empty-state-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* === LOADING === */
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-full {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* === STATS === */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Confirm dialog */
+        .confirm-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SETUP SCREEN (shown when no GitHub token) -->
+    <div class="setup-screen" id="setupScreen">
+        <div class="setup-card">
+            <div style="font-size: 48px; margin-bottom: 16px;">📚</div>
+            <h2>Chromux Books Admin</h2>
+            <p>Kitabein upload aur manage karne ke liye GitHub token chahiye. <br>Yeh ek baar hi daalna hai.</p>
+            <div class="setup-steps">
+                <div class="setup-step">
+                    <span class="setup-step-num">1</span>
+                    <span>GitHub par jaayein → Settings → Developer Settings → Personal Access Tokens → Tokens
+                        (classic)</span>
+                </div>
+                <div class="setup-step">
+                    <span class="setup-step-num">2</span>
+                    <span>"Generate new token" par click karein. Scope me <b>repo</b> select karein.</span>
+                </div>
+                <div class="setup-step">
+                    <span class="setup-step-num">3</span>
+                    <span>Token copy karke neeche paste karein</span>
+                </div>
+            </div>
+            <div class="form-group" style="text-align:left">
+                <label class="form-label">GitHub Token</label>
+                <input type="password" class="form-input" id="setupToken" placeholder="ghp_xxxxxxxxxxxx">
+            </div>
+            <div class="form-group" style="text-align:left">
+                <label class="form-label">Repository (owner/repo)</label>
+                <input type="text" class="form-input" id="setupRepo" placeholder="username/chromux-books-api" value="">
+            </div>
+            <button class="btn btn-primary" style="width:100%; margin-top:8px" onclick="saveSetup()">🔐 Connect &
+                Start</button>
+        </div>
+    </div>
+
+    <!-- MAIN APP (hidden until setup) -->
+    <div id="mainApp" style="display:none">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <span class="logo">📚 Books Admin</span>
+                <span class="header-badge">v2.0</span>
+            </div>
+            <div class="header-right">
+                <div class="status-dot" id="statusDot"></div>
+                <span class="status-text" id="statusText">Connected</span>
+                <button class="btn btn-sm btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- NAV -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showPage('dashboard')"><span
+                    class="tab-icon">📊</span>Dashboard</button>
+            <button class="nav-tab" onclick="showPage('upload')"><span class="tab-icon">📤</span>Upload</button>
+            <button class="nav-tab" onclick="showPage('books')"><span class="tab-icon">📚</span>Books</button>
+            <button class="nav-tab" onclick="showPage('sections')"><span class="tab-icon">📁</span>Categories</button>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="main">
+
+            <!-- DASHBOARD PAGE -->
+            <div class="page active" id="page-dashboard">
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="card">
+                    <div class="card-title">📖 Recent Books</div>
+                    <div id="recentBooks"></div>
+                </div>
+            </div>
+
+            <!-- UPLOAD PAGE -->
+            <div class="page" id="page-upload">
+                <div class="card">
+                    <div class="card-title">📤 Upload New Book</div>
+
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="bookFile" accept=".txt,.epub,.pdf,.html,.htm"
+                            onchange="handleFileSelect(event)">
+                        <div class="upload-icon">📄</div>
+                        <div class="upload-text"><strong>Click</strong> ya <strong>drag & drop</strong> karein</div>
+                        <div class="upload-formats">TXT, EPUB, PDF supported</div>
+                    </div>
+                    <div id="filePreview" style="display:none"></div>
+
+                    <div style="margin-top: 20px">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">📖 Kitab ka Naam *</label>
+                                <input type="text" class="form-input" id="bookTitle" placeholder="e.g. गोदान (Godan)">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">✍️ Lekhak (Author) *</label>
+                                <input type="text" class="form-input" id="bookAuthor" placeholder="e.g. मुंशी प्रेमचंद">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">📁 Category *</label>
+                                <select class="form-select" id="bookSection"></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">🌐 Language</label>
+                                <select class="form-select" id="bookLang">
+                                    <option value="hi">Hindi (हिंदी)</option>
+                                    <option value="en">English</option>
+                                    <option value="ur">Urdu (اردو)</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">🖼️ Cover Image URL</label>
+                            <input type="text" class="form-input" id="bookCover" placeholder="https://... (optional)">
+                        </div>
+                        <div id="uploadProgress" style="display:none">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <div style="font-size:12px; color:var(--text-secondary); margin-top:6px" id="progressText">
+                                Uploading...</div>
+                        </div>
+                        <button class="btn btn-primary" style="width:100%; margin-top: 12px; padding: 14px;"
+                            id="publishBtn" onclick="publishBook()">
+                            🚀 Publish Book
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOOKS PAGE -->
+            <div class="page" id="page-books">
+                <div
+                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+                    <input type="text" class="form-input" id="bookSearch" placeholder="🔍 Search books..."
+                        style="max-width:300px" oninput="renderBooks()">
+                    <select class="form-select" id="bookFilter" style="max-width:200px" onchange="renderBooks()">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div id="booksContainer"></div>
+            </div>
+
+            <!-- SECTIONS PAGE -->
+            <div class="page" id="page-sections">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <h3>📁 Categories</h3>
+                    <button class="btn btn-primary" onclick="openNewSectionModal()">+ New Category</button>
+                </div>
+                <div id="sectionsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="btn btn-icon btn-outline" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIG & STATE
+        // ============================================
+        let CONFIG = { token: '', repo: '', branch: 'main' };
+        let booksData = { version: 1, updated_at: '', sections: [] };
+        let selectedFile = null;
+        let currentBooksSha = ''; // SHA of the current books.json for updates
+
+        const CDN_BASE = 'https://chromux-books.pages.dev/books_content';
+        const API = 'https://api.github.com';
+
+        // ============================================
+        // INIT
+        // ============================================
+        function init() {
+            const saved = localStorage.getItem('chromux_admin');
+            if (saved) {
+                CONFIG = JSON.parse(saved);
+                document.getElementById('setupScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                loadBooksData();
+            }
+        }
+
+        function saveSetup() {
+            const token = document.getElementById('setupToken').value.trim();
+            const repo = document.getElementById('setupRepo').value.trim();
+            if (!token || !repo) return toast('Token aur Repo dono daalein!', 'error');
+            CONFIG = { token, repo, branch: 'main' };
+            localStorage.setItem('chromux_admin', JSON.stringify(CONFIG));
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            loadBooksData();
+        }
+
+        function logout() {
+            localStorage.removeItem('chromux_admin');
+            location.reload();
+        }
+
+        // ============================================
+        // GITHUB API HELPERS
+        // ============================================
+        async function ghFetch(path, opts = {}) {
+            const url = path.startsWith('http') ? path : `${API}/repos/${CONFIG.repo}${path}`;
+            const res = await fetch(url, {
+                ...opts,
+                headers: {
+                    'Authorization': `token ${CONFIG.token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json',
+                    ...(opts.headers || {})
+                }
+            });
+            if (!res.ok) {
+                const errText = await res.text();
+                throw new Error(`GitHub API Error ${res.status}: ${errText}`);
+            }
+            return res.json();
+        }
+
+        async function getFileContent(path) {
+            try {
+                const data = await ghFetch(`/contents/${path}?ref=${CONFIG.branch}`);
+                return { content: atob(data.content.replace(/\n/g, '')), sha: data.sha };
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function putFileContent(path, content, message, sha = null) {
+            const body = {
+                message,
+                content: btoa(unescape(encodeURIComponent(content))),
+                branch: CONFIG.branch
+            };
+            if (sha) body.sha = sha;
+            return ghFetch(`/contents/${path}`, { method: 'PUT', body: JSON.stringify(body) });
+        }
+
+        async function putBinaryFile(path, base64Content, message, sha = null) {
+            const body = {
+                message,
+                content: base64Content,
+                branch: CONFIG.branch
+            };
+            if (sha) body.sha = sha;
+            return ghFetch(`/contents/${path}`, { method: 'PUT', body: JSON.stringify(body) });
+        }
+
+        async function deleteFile(path, sha, message) {
+            return ghFetch(`/contents/${path}`, {
+                method: 'DELETE',
+                body: JSON.stringify({ message, sha, branch: CONFIG.branch })
+            });
+        }
+
+        // ============================================
+        // LOAD & SAVE DATA
+        // ============================================
+        async function loadBooksData() {
+            try {
+                setStatus('Loading...', false);
+                const result = await getFileContent('api/books.json');
+                if (result) {
+                    booksData = JSON.parse(result.content);
+                    currentBooksSha = result.sha;
+                } else {
+                    booksData = { version: 1, updated_at: new Date().toISOString().split('T')[0], sections: [] };
+                }
+                setStatus('Connected', true);
+                refreshAll();
+            } catch (e) {
+                setStatus('Error!', false);
+                toast('Load failed: ' + e.message, 'error');
+            }
+        }
+
+        async function saveBooksData(commitMsg) {
+            try {
+                booksData.updated_at = new Date().toISOString().split('T')[0];
+                const content = JSON.stringify(booksData, null, 2);
+                const result = await putFileContent('api/books.json', content, commitMsg, currentBooksSha);
+                currentBooksSha = result.content.sha;
+                return true;
+            } catch (e) {
+                toast('Save failed: ' + e.message, 'error');
+                return false;
+            }
+        }
+
+        // ============================================
+        // UI HELPERS
+        // ============================================
+        function showPage(name) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('page-' + name).classList.add('active');
+            event.target.closest('.nav-tab').classList.add('active');
+            if (name === 'books') renderBooks();
+            if (name === 'sections') renderSections();
+            if (name === 'upload') populateSectionSelector();
+            if (name === 'dashboard') renderDashboard();
+        }
+
+        function setStatus(text, ok) {
+            document.getElementById('statusText').textContent = text;
+            document.getElementById('statusDot').style.background = ok ? 'var(--success)' : 'var(--danger)';
+        }
+
+        function toast(msg, type = 'success') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = 'toast toast-' + type;
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 3500);
+        }
+
+        function openModal(title, bodyHTML, footerHTML) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = bodyHTML;
+            document.getElementById('modalFooter').innerHTML = footerHTML;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function refreshAll() {
+            renderDashboard();
+            renderSections();
+            renderBooks();
+            populateSectionSelector();
+            populateBookFilter();
+        }
+
+        // ============================================
+        // DASHBOARD
+        // ============================================
+        function renderDashboard() {
+            const totalBooks = booksData.sections.reduce((sum, s) => sum + s.books.length, 0);
+            document.getElementById('statsGrid').innerHTML = `
+        <div class="stat-card"><div class="stat-value">${totalBooks}</div><div class="stat-label">Total Books</div></div>
+        <div class="stat-card"><div class="stat-value">${booksData.sections.length}</div><div class="stat-label">Categories</div></div>
+        <div class="stat-card"><div class="stat-value">${booksData.sections.filter(s => s.title.includes('Trending')).length}</div><div class="stat-label">Trending</div></div>
+    `;
+
+            const allBooks = booksData.sections.flatMap(s => s.books);
+            const recent = allBooks.slice(-6).reverse();
+            if (recent.length === 0) {
+                document.getElementById('recentBooks').innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <div class="empty-state-text">Abhi koi kitab nahi hai</div>
+                <div class="empty-state-sub">"Upload" tab se nayi kitab add karein!</div>
+            </div>`;
+            } else {
+                document.getElementById('recentBooks').innerHTML = `<div class="book-grid">${recent.map(b => bookCardHTML(b)).join('')}</div>`;
+            }
+        }
+
+        function bookCardHTML(book) {
+            const coverHTML = book.cover
+                ? `<div class="book-cover"><img src="${book.cover}" onerror="this.parentElement.innerHTML='📖'" loading="lazy"></div>`
+                : `<div class="book-cover">📖</div>`;
+            return `<div class="book-card" onclick="openBookModal(${book.id})">
+        ${coverHTML}
+        <div class="book-info">
+            <div class="book-title">${book.title}</div>
+            <div class="book-author">${book.author}</div>
+        </div>
+    </div>`;
+        }
+
+        // ============================================
+        // SECTIONS / CATEGORIES
+        // ============================================
+        function renderSections() {
+            const c = document.getElementById('sectionsContainer');
+            if (booksData.sections.length === 0) {
+                c.innerHTML = `<div class="empty-state">
+            <div class="empty-state-icon">📁</div>
+            <div class="empty-state-text">Koi category nahi hai</div>
+            <div class="empty-state-sub">"+ New Category" se pahli category banayein</div>
+        </div>`;
+                return;
+            }
+            c.innerHTML = booksData.sections.map((s, i) => `
+        <div class="section-item">
+            <div class="section-left">
+                <span style="cursor:grab; font-size:18px">☰</span>
+                <div>
+                    <div class="section-title">${s.title}</div>
+                    <div class="section-meta">${s.books.length} books · ${s.type} ${s.title.includes('Trending') ? '<span class="trending-badge">🔥 TRENDING</span>' : ''}</div>
+                </div>
+            </div>
+            <div class="section-actions">
+                <button class="btn btn-sm ${s.title.includes('Trending') ? 'btn-warning' : 'btn-outline'}" onclick="toggleTrending(${i})" title="Trending">${s.title.includes('Trending') ? '🔥' : '☆'}</button>
+                <button class="btn btn-sm btn-outline" onclick="moveSection(${i}, -1)" title="Up">↑</button>
+                <button class="btn btn-sm btn-outline" onclick="moveSection(${i}, 1)" title="Down">↓</button>
+                <button class="btn btn-sm btn-outline" onclick="openEditSectionModal(${i})" title="Edit">✏️</button>
+                <button class="btn btn-sm btn-danger" onclick="confirmDeleteSection(${i})" title="Delete">🗑️</button>
+            </div>
+        </div>`).join('');
+        }
+
+        function openNewSectionModal() {
+            openModal('➕ New Category',
+                `<div class="form-group">
+            <label class="form-label">Category Icon + Name</label>
+            <input type="text" class="form-input" id="newSectionTitle" placeholder="e.g. 📚 Hindi Novels">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Display Type</label>
+            <select class="form-select" id="newSectionType">
+                <option value="medium_carousel">Medium Carousel</option>
+                <option value="large_carousel">Large Carousel (Featured)</option>
+            </select>
+        </div>`,
+                `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+         <button class="btn btn-primary" onclick="createSection()">Create</button>`
+            );
+        }
+
+        async function createSection() {
+            const title = document.getElementById('newSectionTitle').value.trim();
+            const type = document.getElementById('newSectionType').value;
+            if (!title) return toast('Category naam daalein!', 'error');
+
+            const id = title.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '_').substring(0, 30);
+            booksData.sections.push({ id, title, type, books: [] });
+
+            closeModal();
+            if (await saveBooksData(`Add category: ${title}`)) {
+                toast('Category banaa di! ✅');
+                refreshAll();
+            }
+        }
+
+        function openEditSectionModal(index) {
+            const s = booksData.sections[index];
+            const rawTitle = s.title.replace(/🔥 Trending: /g, '');
+            openModal('✏️ Edit Category',
+                `<div class="form-group">
+            <label class="form-label">Category Name</label>
+            <input type="text" class="form-input" id="editSectionTitle" value="${rawTitle}">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Display Type</label>
+            <select class="form-select" id="editSectionType">
+                <option value="medium_carousel" ${s.type === 'medium_carousel' ? 'selected' : ''}>Medium Carousel</option>
+                <option value="large_carousel" ${s.type === 'large_carousel' ? 'selected' : ''}>Large Carousel (Featured)</option>
+            </select>
+        </div>`,
+                `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+         <button class="btn btn-primary" onclick="updateSection(${index})">Save</button>`
+            );
+        }
+
+        async function updateSection(index) {
+            const title = document.getElementById('editSectionTitle').value.trim();
+            const type = document.getElementById('editSectionType').value;
+            if (!title) return toast('Naam daalein!', 'error');
+
+            const wasTrending = booksData.sections[index].title.includes('🔥 Trending:');
+            booksData.sections[index].title = wasTrending ? `🔥 Trending: ${title}` : title;
+            booksData.sections[index].type = type;
+
+            closeModal();
+            if (await saveBooksData(`Edit category: ${title}`)) {
+                toast('Category update ho gayi! ✅');
+                refreshAll();
+            }
+        }
+
+        async function toggleTrending(index) {
+            const s = booksData.sections[index];
+            if (s.title.includes('🔥 Trending:')) {
+                s.title = s.title.replace('🔥 Trending: ', '');
+            } else {
+                s.title = '🔥 Trending: ' + s.title;
+            }
+            if (await saveBooksData(`Toggle trending: ${s.title}`)) {
+                toast('Trending updated! 🔥');
+                refreshAll();
+            }
+        }
+
+        async function moveSection(index, dir) {
+            const newIndex = index + dir;
+            if (newIndex < 0 || newIndex >= booksData.sections.length) return;
+            const temp = booksData.sections[index];
+            booksData.sections[index] = booksData.sections[newIndex];
+            booksData.sections[newIndex] = temp;
+            if (await saveBooksData('Reorder categories')) {
+                renderSections();
+            }
+        }
+
+        function confirmDeleteSection(index) {
+            const s = booksData.sections[index];
+            openModal('🗑️ Delete Category',
+                `<p class="confirm-text">Kya aap <strong>"${s.title}"</strong> category haataana chahte hain?<br>Isme <strong>${s.books.length} kitabein</strong> hain — sab delete ho jayengi!</p>`,
+                `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+         <button class="btn btn-danger" onclick="deleteSection(${index})">Haan, Delete Karo</button>`
+            );
+        }
+
+        async function deleteSection(index) {
+            const name = booksData.sections[index].title;
+            booksData.sections.splice(index, 1);
+            closeModal();
+            if (await saveBooksData(`Delete category: ${name}`)) {
+                toast('Category delete ho gayi!');
+                refreshAll();
+            }
+        }
+
+        // ============================================
+        // BOOK UPLOAD
+        // ============================================
+        function populateSectionSelector() {
+            const sel = document.getElementById('bookSection');
+            sel.innerHTML = booksData.sections.length === 0
+                ? '<option value="">— Pahle ek category banayein —</option>'
+                : booksData.sections.map(s => `<option value="${s.id}">${s.title}</option>`).join('');
+        }
+
+        function populateBookFilter() {
+            const sel = document.getElementById('bookFilter');
+            sel.innerHTML = '<option value="">All Categories</option>' +
+                booksData.sections.map(s => `<option value="${s.id}">${s.title}</option>`).join('');
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            selectedFile = file;
+            const zone = document.getElementById('uploadZone');
+            zone.classList.add('has-file');
+            document.getElementById('filePreview').style.display = 'block';
+            document.getElementById('filePreview').innerHTML = `
+        <div class="file-info">
+            <span style="font-size:24px">${getFileIcon(file.name)}</span>
+            <div>
+                <div class="file-info-name">${file.name}</div>
+                <div class="file-info-size">${formatSize(file.size)}</div>
+            </div>
+            <button class="btn btn-sm btn-outline" style="margin-left:auto" onclick="clearFile()">✕</button>
+        </div>`;
+        }
+
+        function clearFile() {
+            selectedFile = null;
+            document.getElementById('bookFile').value = '';
+            document.getElementById('uploadZone').classList.remove('has-file');
+            document.getElementById('filePreview').style.display = 'none';
+        }
+
+        function getFileIcon(name) {
+            if (name.endsWith('.epub')) return '📕';
+            if (name.endsWith('.pdf')) return '📄';
+            if (name.endsWith('.txt')) return '📝';
+            return '📃';
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        async function publishBook() {
+            if (!selectedFile) return toast('Pahle file select karein!', 'error');
+            const title = document.getElementById('bookTitle').value.trim();
+            const author = document.getElementById('bookAuthor').value.trim();
+            const sectionId = document.getElementById('bookSection').value;
+            const lang = document.getElementById('bookLang').value;
+            const cover = document.getElementById('bookCover').value.trim();
+
+            if (!title || !author) return toast('Title aur Author daalein!', 'error');
+            if (!sectionId) return toast('Category select karein!', 'error');
+
+            const btn = document.getElementById('publishBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Publishing...';
+
+            const progress = document.getElementById('uploadProgress');
+            progress.style.display = 'block';
+            setProgress(10, 'File padh rahe hain...');
+
+            try {
+                // Generate unique ID
+                const bookId = Date.now();
+                const ext = selectedFile.name.split('.').pop().toLowerCase();
+                const fileName = `${bookId}.${ext}`;
+
+                // Read file as base64
+                setProgress(30, 'File upload ho rahi hai...');
+                const base64 = await readFileAsBase64(selectedFile);
+
+                // Upload file to GitHub
+                setProgress(50, 'GitHub par upload ho rahi hai...');
+                await putBinaryFile(`books_content/${fileName}`, base64, `Upload book: ${title}`);
+
+                // Add book to JSON
+                setProgress(70, 'books.json update ho rahi hai...');
+                const section = booksData.sections.find(s => s.id === sectionId);
+                if (!section) throw new Error('Category nahi mili!');
+
+                const readUrl = `${CDN_BASE}/${fileName}`;
+                section.books.push({
+                    id: bookId,
+                    title,
+                    author,
+                    cover: cover || '',
+                    read_url: readUrl,
+                    language: lang,
+                    downloads: 0
+                });
+
+                setProgress(90, 'Save ho raha hai...');
+                await saveBooksData(`Add book: ${title} by ${author}`);
+
+                setProgress(100, 'Done! ✅');
+                toast('Kitab publish ho gayi! 🎉');
+
+                // Reset form
+                setTimeout(() => {
+                    clearFile();
+                    document.getElementById('bookTitle').value = '';
+                    document.getElementById('bookAuthor').value = '';
+                    document.getElementById('bookCover').value = '';
+                    progress.style.display = 'none';
+                    btn.disabled = false;
+                    btn.innerHTML = '🚀 Publish Book';
+                    refreshAll();
+                }, 1500);
+
+            } catch (e) {
+                toast('Upload fail: ' + e.message, 'error');
+                btn.disabled = false;
+                btn.innerHTML = '🚀 Publish Book';
+                progress.style.display = 'none';
+            }
+        }
+
+        function setProgress(percent, text) {
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = text;
+        }
+
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Drag & drop
+        const zone = document.getElementById('uploadZone');
+        ['dragenter', 'dragover'].forEach(e => zone?.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('drag-over'); }));
+        ['dragleave', 'drop'].forEach(e => zone?.addEventListener(e, ev => { ev.preventDefault(); zone.classList.remove('drag-over'); }));
+        zone?.addEventListener('drop', ev => {
+            const file = ev.dataTransfer.files[0];
+            if (file) {
+                const input = document.getElementById('bookFile');
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                input.files = dt.files;
+                handleFileSelect({ target: input });
+            }
+        });
+
+        // ============================================
+        // BOOKS MANAGEMENT
+        // ============================================
+        function renderBooks() {
+            const search = document.getElementById('bookSearch').value.toLowerCase();
+            const filter = document.getElementById('bookFilter').value;
+            const c = document.getElementById('booksContainer');
+
+            let sections = booksData.sections;
+            if (filter) sections = sections.filter(s => s.id === filter);
+
+            const matchingSections = sections.map(s => ({
+                ...s,
+                books: s.books.filter(b =>
+                    b.title.toLowerCase().includes(search) ||
+                    b.author.toLowerCase().includes(search)
+                )
+            })).filter(s => s.books.length > 0);
+
+            if (matchingSections.length === 0) {
+                c.innerHTML = `<div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <div class="empty-state-text">${search || filter ? 'Koi result nahi mila' : 'Abhi koi kitab nahi hai'}</div>
+            <div class="empty-state-sub">${search || filter ? 'Search ya filter badal ke dekhein' : '"Upload" tab se kitabein add karein'}</div>
+        </div>`;
+                return;
+            }
+
+            c.innerHTML = matchingSections.map(s => `
+        <div class="card">
+            <div class="card-title">${s.title} <span style="font-size:12px; color:var(--text-secondary)">(${s.books.length})</span></div>
+            <div class="book-grid">${s.books.map(b => bookCardHTML(b)).join('')}</div>
+        </div>
+    `).join('');
+        }
+
+        function openBookModal(bookId) {
+            let book = null, sectionIndex = -1, bookIndex = -1;
+            booksData.sections.forEach((s, si) => {
+                s.books.forEach((b, bi) => {
+                    if (b.id === bookId) { book = b; sectionIndex = si; bookIndex = bi; }
+                });
+            });
+            if (!book) return;
+
+            const sectionOpts = booksData.sections.map((s, i) =>
+                `<option value="${i}" ${i === sectionIndex ? 'selected' : ''}>${s.title}</option>`
+            ).join('');
+
+            openModal('📖 ' + book.title,
+                `<div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-input" id="editBookTitle" value="${book.title}">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Author</label>
+            <input type="text" class="form-input" id="editBookAuthor" value="${book.author}">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Cover URL</label>
+            <input type="text" class="form-input" id="editBookCover" value="${book.cover || ''}">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="editBookSection">${sectionOpts}</select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Read URL</label>
+            <input type="text" class="form-input" id="editBookUrl" value="${book.read_url}" style="font-size:12px">
+        </div>`,
+                `<button class="btn btn-danger" onclick="confirmDeleteBook(${sectionIndex}, ${bookIndex})">🗑️ Delete</button>
+         <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+         <button class="btn btn-primary" onclick="updateBook(${sectionIndex}, ${bookIndex})">💾 Save</button>`
+            );
+        }
+
+        async function updateBook(si, bi) {
+            const book = booksData.sections[si].books[bi];
+            const newSi = parseInt(document.getElementById('editBookSection').value);
+
+            book.title = document.getElementById('editBookTitle').value.trim();
+            book.author = document.getElementById('editBookAuthor').value.trim();
+            book.cover = document.getElementById('editBookCover').value.trim();
+            book.read_url = document.getElementById('editBookUrl').value.trim();
+
+            // Move to different section if changed
+            if (newSi !== si) {
+                booksData.sections[si].books.splice(bi, 1);
+                booksData.sections[newSi].books.push(book);
+            }
+
+            closeModal();
+            if (await saveBooksData(`Edit book: ${book.title}`)) {
+                toast('Book update ho gayi! ✅');
+                refreshAll();
+            }
+        }
+
+        function confirmDeleteBook(si, bi) {
+            const book = booksData.sections[si].books[bi];
+            closeModal();
+            setTimeout(() => {
+                openModal('🗑️ Delete Book',
+                    `<p class="confirm-text">Kya aap <strong>"${book.title}"</strong> ko delete karna chahte hain?</p>`,
+                    `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+             <button class="btn btn-danger" onclick="deleteBook(${si}, ${bi})">Haan, Delete</button>`
+                );
+            }, 200);
+        }
+
+        async function deleteBook(si, bi) {
+            const name = booksData.sections[si].books[bi].title;
+            booksData.sections[si].books.splice(bi, 1);
+            closeModal();
+            if (await saveBooksData(`Delete book: ${name}`)) {
+                toast('Book delete ho gayi!');
+                refreshAll();
+            }
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        init();
+    </script>
+</body>
+
+</html>

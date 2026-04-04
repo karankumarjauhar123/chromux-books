@@ -1,0 +1,22 @@
+/api/*
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600
+
+/books_content/*.epub
+  Access-Control-Allow-Origin: *
+  Content-Type: application/epub+zip
+  Cache-Control: public, max-age=86400
+
+/books_content/*.txt
+  Access-Control-Allow-Origin: *
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+/books_content/*.pdf
+  Access-Control-Allow-Origin: *
+  Content-Type: application/pdf
+  Cache-Control: public, max-age=86400
+
+/admin/*
+  Cache-Control: no-cache
